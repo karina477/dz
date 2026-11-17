@@ -46,4 +46,65 @@ public class OnlinePaymentTest extends BaseTest {
 
         assertTrue(mtsMainPage.isPaymentWindowDisplayed(), "Окно оплаты не открылось");
     }
+
+    @Test
+    public void checkEmptyFieldsPlaceholders() {
+        MtsMainPage mtsMainPage = new MtsMainPage(driver, wait).open();
+
+        assertEquals(
+                List.of("Номер телефона", "Сумма", "E-mail для отправки чека"),
+                mtsMainPage.getConnectionPlaceholders(),
+                "Неверные надписи в полях 'Услуги связи'"
+        );
+
+        mtsMainPage.selectInternet();
+        assertEquals(
+                List.of("Номер абонента", "Сумма", "E-mail для отправки чека"),
+                mtsMainPage.getInternetPlaceholders(),
+                "Неверные надписи в полях 'Домашний интернет'"
+        );
+
+        mtsMainPage.selectInstalment();
+        assertEquals(
+                List.of("Номер счета на 44", "Сумма", "E-mail для отправки чека"),
+                mtsMainPage.getInstalmentPlaceholders(),
+                "Неверные надписи в полях 'Рассрочка'"
+        );
+
+        mtsMainPage.selectArrears();
+        assertEquals(
+                List.of("Номер счета на 2073", "Сумма", "E-mail для отправки чека"),
+                mtsMainPage.getArrearsPlaceholders(),
+                "Неверные надписи в полях 'Задолженность'"
+        );
+    }
+
+    @Test
+    public void checkPaymentModalDetails() {
+        MtsMainPage mtsMainPage = new MtsMainPage(driver, wait).open();
+
+        mtsMainPage.fillForm("297777777", "10");
+        mtsMainPage.clickBankCardButton();
+
+        mtsMainPage.switchToPaymentIframe();
+
+        assertEquals("10.00 BYN", mtsMainPage.getModalHeaderAmount(), "Неверная сумма в шапке окна");
+        assertEquals(
+                "Оплатить  10.00 BYN",
+                mtsMainPage.getModalPayButtonText(),
+                "Неверная сумма на кнопке оплаты"
+        );
+
+        assertTrue(
+                mtsMainPage.getModalDescriptionText().contains("375297777777"),
+                "Номер телефона не совпадает"
+        );
+
+        List<String> expectedLabels = List.of("Номер карты", "Срок действия", "CVC", "Имя и фамилия на карте");
+        assertTrue(mtsMainPage.getModalCardLabels().containsAll(expectedLabels),
+                "Не найдены все ожидаемые надписи полей карты: " + mtsMainPage.getModalCardLabels());
+
+        List<WebElement> cardIcons = mtsMainPage.getModalCardIcons();
+        assertFalse(cardIcons.isEmpty(), "Иконки платёжных систем в окне оплаты не найдены");
+    }
 }
