@@ -1,3 +1,4 @@
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -86,7 +87,7 @@ public class MtsMainPage {
     @FindBy(xpath = "//input[@id='arrears-email']")
     private WebElement arrearsEmailInput;
 
-    @FindBy(xpath = "//div[contains(@class, 'pay-description__cost')]//span")
+    @FindBy(xpath = "//div[contains(@class, 'pay-description__cost')]//*[contains(text(), 'BYN')]")
     private WebElement modalHeaderAmount;
 
     @FindBy(xpath = "//div[contains(@class, 'pay-description__text')]//span")
@@ -107,6 +108,7 @@ public class MtsMainPage {
         PageFactory.initElements(driver, this);
     }
 
+    @Step("Открыть главную страницу mts.by и принять cookie")
     public MtsMainPage open() {
         driver.get("https://mts.by");
         wait.until(ExpectedConditions.visibilityOf(cookieButtons));
@@ -114,46 +116,56 @@ public class MtsMainPage {
         return this;
     }
 
+    @Step("Проверить отображение заголовка блока оплаты")
     public boolean isTitleDisplayed() {
         return title.isDisplayed();
     }
 
+    @Step("Получить текст заголовка блока оплаты")
     public String getTitleText() {
         return title.getText().replace("\n", " ").toUpperCase();
     }
 
+    @Step("Получить список логотипов платёжных систем")
     public List<WebElement> getLogos() {
         return logos;
     }
 
+    @Step("Нажать на ссылку «Подробнее о сервисе»")
     public void clickMoreLink() {
         moreLink.click();
     }
 
+    @Step("Заполнить форму «Услуги связи»: телефон {phone}, сумма {sum}")
     public void fillForm(String phone, String sum) {
         connectionPhoneInput.sendKeys(phone);
         connectionSumInput.sendKeys(sum);
     }
 
+    @Step("Нажать на кнопку «Банковская карта»")
     public void clickBankCardButton() {
         bankCardButton.click();
     }
 
+    @Step("Проверить отображение модального окна оплаты")
     public boolean isPaymentWindowDisplayed() {
         wait.until(ExpectedConditions.visibilityOf(paymentWindow));
         return paymentWindow.isDisplayed();
     }
 
+    @Step("Выбрать вариант оплаты «Домашний интернет»")
     public void selectInternet() {
         serviceSelectButton.click();
         internetOption.click();
     }
 
+    @Step("Выбрать вариант оплаты «Рассрочка»")
     public void selectInstalment() {
         serviceSelectButton.click();
         instalmentOption.click();
     }
 
+    @Step("Выбрать вариант оплаты «Задолженность»")
     public void selectArrears() {
         serviceSelectButton.click();
         arrearsOption.click();
@@ -191,6 +203,7 @@ public class MtsMainPage {
         );
     }
 
+    @Step("Переключиться внутрь фрейма окна оплаты bePaid")
     public void switchToPaymentIframe() {
         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(paymentWindow));
     }

@@ -1,3 +1,7 @@
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -7,9 +11,13 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Epic("Онлайн-оплата на сайте mts.by")
+@Feature("Блок «Онлайн пополнение без комиссии»")
 public class OnlinePaymentTest extends BaseTest {
 
     @Test
+    @DisplayName("Проверка названия блока оплаты")
+    @Description("Проверяем, что заголовок блока отображается и содержит текст 'Онлайн пополнение без комиссии'")
     public void checkTitle() {
         MtsMainPage mtsMainPage = new MtsMainPage(driver, wait).open();
 
@@ -18,6 +26,8 @@ public class OnlinePaymentTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Проверка наличия логотипов платёжных систем")
+    @Description("Проверяем, что все логотипы платёжных систем отображаются на странице")
     public void checkLogos() {
         MtsMainPage mtsMainPage = new MtsMainPage(driver, wait).open();
         List<WebElement> logos = mtsMainPage.getLogos();
@@ -29,6 +39,8 @@ public class OnlinePaymentTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Проверка работы ссылки «Подробнее о сервисе»")
+    @Description("Переходим по ссылке и проверяем корректность открывшегося URL")
     public void checkMoreLink() {
         MtsMainPage mtsMainPage = new MtsMainPage(driver, wait).open();
         mtsMainPage.clickMoreLink();
@@ -39,6 +51,8 @@ public class OnlinePaymentTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Проверка отправки формы «Услуги связи»")
+    @Description("Заполняем телефон 297777777 и сумму 10, нажимаем кнопку оплаты и проверяем открытие окна")
     public void checkPaymentForm() {
         MtsMainPage mtsMainPage = new MtsMainPage(driver, wait).open();
         mtsMainPage.fillForm("297777777", "10");
@@ -48,6 +62,8 @@ public class OnlinePaymentTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Проверка надписей в незаполненных полях всех услуг")
+    @Description("Проверяем плейсхолдеры для вариантов: Услуги связи, Домашний интернет, Рассрочка, Задолженность")
     public void checkEmptyFieldsPlaceholders() {
         MtsMainPage mtsMainPage = new MtsMainPage(driver, wait).open();
 
@@ -80,6 +96,8 @@ public class OnlinePaymentTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Проверка данных внутри модального окна оплаты")
+    @Description("Проверяем сумму в шапке и на кнопке, номер телефона, подписи полей карты и иконки платёжных систем")
     public void checkPaymentModalDetails() {
         MtsMainPage mtsMainPage = new MtsMainPage(driver, wait).open();
 
