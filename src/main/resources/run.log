@@ -1,0 +1,12 @@
+LoginTest|PASSED|140
+CreateTaskTest|FAILED|890
+FirstFailedTest|FAILED|150
+CommentTest|SKIPPED|0
+CreateTaskTest|PASSED|920
+FirstSplitTestPASSED|14
+SecondSplitTestSKIPPED15
+StatusTest|SKIPPE|15
+NotNumberTest|FAILED|ghytj
+NegativeNumberTest|FAILED|-890
+NotDuplicateTest|FAILED|80
+NotDuplicateTest|FAILED|90
